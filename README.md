@@ -20,7 +20,7 @@ TMRW—KeyFlow keeps the current key until a real API error occurs, then switche
 3. Run the commands from `INSTALL-TERMUX.txt`.
 4. Reload SillyTavern and open **Extensions → TMRW—KeyFlow**.
 
-The installer removes the old local `SillyTavern-Extension-KeyPilot` folder to prevent both versions from loading together. It does not remove your API keys.
+If ZerxzLib is installed, disable or remove it before using KeyFlow to prevent both extensions from rotating keys at the same time. Removing an extension does not delete API keys stored by SillyTavern.
 
 ## Security
 

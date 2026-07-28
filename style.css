@@ -90,7 +90,8 @@
 }
 
 #keyflow-add-keys,
-#keyflow-next {
+#keyflow-next,
+#keyflow-copy-config-fix {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -99,7 +100,8 @@
     word-break: keep-all;
 }
 
-#keyflow-add-keys {
+#keyflow-add-keys,
+#keyflow-copy-config-fix {
     width: 100%;
     min-width: 8rem;
 }

@@ -37,7 +37,6 @@ if [ -z "$TARGETS" ]; then
 fi
 
 for TARGET in $TARGETS; do
-  rm -rf "$TARGET/SillyTavern-Extension-KeyPilot"
   rm -rf "$TARGET/SillyTavern-Extension-TMRW-KeyFlow"
   cp -R "$SOURCE" "$TARGET/SillyTavern-Extension-TMRW-KeyFlow"
   echo "✅ ติดตั้งไว้ที่: $TARGET/SillyTavern-Extension-TMRW-KeyFlow"

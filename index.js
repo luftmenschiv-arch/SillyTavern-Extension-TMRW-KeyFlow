@@ -15,9 +15,8 @@ import {
 } from '../../../secrets.js';
 
 const EXTENSION_NAME = 'tmrw_keyflow';
-const LEGACY_SETTINGS_NAME = 'keypilot';
 const DISPLAY_NAME = 'TMRW—KeyFlow';
-const EXTENSION_VERSION = '1.1.1';
+const EXTENSION_VERSION = '1.1.2';
 const GENERATE_PATH = '/api/backends/chat-completions/generate';
 const LARGE_KEY_COUNT = 30;
 
@@ -68,6 +67,7 @@ let wrappedFetch = null;
 let initialized = false;
 let uiRoot = null;
 let allowKeysExposure = null;
+let exposureRefreshTimer = null;
 let bulkOperationRunning = false;
 let legacyConflict = false;
 let keyListState = { page: 0, query: '' };
@@ -79,11 +79,7 @@ function cloneDefaults() {
 }
 
 function loadSettings() {
-    // Preserve settings for people updating from KeyPilot 1.0.x.
-    const legacy = extension_settings[LEGACY_SETTINGS_NAME];
-    extension_settings[EXTENSION_NAME] ??= legacy
-        ? JSON.parse(JSON.stringify(legacy))
-        : cloneDefaults();
+    extension_settings[EXTENSION_NAME] ??= cloneDefaults();
 
     const loaded = extension_settings[EXTENSION_NAME];
     settings = Object.assign(cloneDefaults(), loaded);
@@ -563,7 +559,11 @@ async function bulkDeleteKeys(mode) {
 }
 
 async function copyExposureFixCommand() {
-    const command = `cd ~/SillyTavern && cp config.yaml "config.yaml.backup-$(date +%Y%m%d-%H%M%S)" && sed -i -E 's/^([[:space:]]*allowKeysExposure:[[:space:]]*)true([[:space:]]*(#.*)?)$/\\1false\\2/' config.yaml && grep -n "allowKeysExposure" config.yaml`;
+    const command = `cd ~/SillyTavern || exit
+cp config.yaml "config.yaml.backup-$(date +%Y%m%d-%H%M%S)"
+sed -i -E 's/^([[:space:]]*allowKeysExposure:[[:space:]]*)true([[:space:]]*(#.*)?)$/\1false\2/' config.yaml
+grep -n "allowKeysExposure" config.yaml
+bash start.sh`;
     try {
         await navigator.clipboard.writeText(command);
         notify('success', 'คัดลอกคำสั่งแล้ว ปิด SillyTavern ใน Termux ก่อนวางคำสั่ง', true);
@@ -588,11 +588,11 @@ function buildUi() {
             <details id="keyflow-migration-tools" class="keyflow-warning" hidden>
                 <summary><b>เครื่องมือย้ายจากส่วนเสริมเก่า</b></summary>
                 <div id="keyflow-legacy-warning" class="keyflow-warning-item" hidden>
-                    พบ ZerxzLib หรือ KeyPilot รุ่นเก่าอยู่ด้วย กรุณาปิดหรือลบตัวเดิม เพื่อไม่ให้สองส่วนเสริมสลับคีย์ชนกัน
+                    พบ ZerxzLib อยู่ด้วย กรุณาปิดหรือลบส่วนเสริมเดิม เพื่อไม่ให้สองส่วนเสริมสลับคีย์ชนกัน
                 </div>
                 <div id="keyflow-exposure-warning" class="keyflow-warning-item" hidden>
-                    <div><b><code>allowKeysExposure</code> ยังเป็น <code>true</code></b><br>KeyFlow ไม่ต้องใช้ค่านี้ แนะนำให้เปลี่ยนกลับเป็น <code>false</code> แล้วรีสตาร์ต SillyTavern</div>
-                    <button id="keyflow-copy-config-fix" type="button" class="menu_button">คัดลอกคำสั่งแก้สำหรับ Termux</button>
+                    <div><b><code>allowKeysExposure</code> ยังเป็น <code>true</code></b><br>KeyFlow ไม่ต้องใช้ค่านี้ แนะนำให้เปลี่ยนกลับเป็น <code>false</code> แล้วรีสตาร์ต SillyTavern จากนั้นกลับมาหน้านี้ ระบบจะตรวจสอบให้อัตโนมัติ</div>
+                    <button id="keyflow-copy-config-fix" type="button" class="menu_button">คัดลอกคำสั่ง Termux</button>
                 </div>
                 <div id="keyflow-overflow-warning" class="keyflow-warning-item" hidden>
                     <div id="keyflow-overflow-text"></div>
@@ -885,11 +885,9 @@ function renderKeyList() {
 
 function detectLegacyExtension() {
     return Boolean(
-        window.fetch?.__keypilot ||
-        document.querySelector('#keypilot-settings') ||
         document.querySelector('gemini-layouts') ||
         document.querySelector('#api_key_makersuite_custom') ||
-        [...document.querySelectorAll('.inline-drawer-header')].some(element => /zerxzlib|keypilot/i.test(element.textContent || ''))
+        [...document.querySelectorAll('.inline-drawer-header')].some(element => /zerxzlib/i.test(element.textContent || ''))
     );
 }
 
@@ -931,14 +929,31 @@ function subscribe(eventName, handler) {
     subscriptions.push([eventName, handler]);
 }
 
+async function refreshExposureSetting() {
+    try {
+        const value = await canViewSecrets();
+        if (typeof value !== 'boolean') return;
+        const changed = allowKeysExposure !== value;
+        allowKeysExposure = value;
+        if (changed) renderMigrationTools();
+    } catch {
+        // Keep the previous value if the server is still restarting.
+    }
+}
+
+function scheduleExposureRefresh() {
+    clearTimeout(exposureRefreshTimer);
+    exposureRefreshTimer = setTimeout(refreshExposureSetting, 1200);
+}
+
+function handleVisibilityChange() {
+    if (document.visibilityState === 'visible') scheduleExposureRefresh();
+}
+
 async function refreshState() {
     await readSecretState();
     pruneCooldowns();
-    try {
-        allowKeysExposure = await canViewSecrets();
-    } catch {
-        allowKeysExposure = null;
-    }
+    await refreshExposureSetting();
 }
 
 async function refreshFromSecretEvent() {
@@ -952,6 +967,10 @@ export async function onActivate() {
 
 export function onDisable() {
     uninstallFetchInterceptor();
+    clearTimeout(exposureRefreshTimer);
+    exposureRefreshTimer = null;
+    window.removeEventListener('focus', scheduleExposureRefresh);
+    document.removeEventListener('visibilitychange', handleVisibilityChange);
     for (const [eventName, handler] of subscriptions.splice(0)) {
         eventSource.removeListener?.(eventName, handler);
     }
@@ -979,6 +998,8 @@ async function initialize() {
 
     bindUi();
     renderAll();
+    window.addEventListener('focus', scheduleExposureRefresh);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
     if (!legacyConflict) {
         installFetchInterceptor();
     } else {

@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.1.2
+
+- Removed references to the unreleased prototype name.
+- Made the Termux configuration button full-width and horizontal on mobile.
+- Rechecks `allowKeysExposure` after returning to the browser, so the warning clears after SillyTavern restarts.
+- Shortened the Termux button label and made the copied command easier to read.
+
 ## 1.1.1
 
 - Removed the notification test button.
@@ -8,21 +15,12 @@
 
 ## 1.1.0
 
-- Renamed the extension to **TMRW—KeyFlow** and changed the author to **tmrw**.
-- Added migration from legacy `keypilot` settings.
-- Added a migration assistant for oversized key lists and old extensions.
+- Released the extension as **TMRW—KeyFlow** by **tmrw**.
+- Added a migration assistant for oversized key lists and ZerxzLib installations.
 - Added one-tap bulk cleanup: keep the active key only, or delete all keys for the selected provider.
 - Added detection of `allowKeysExposure: true` with a copyable Termux fix command.
 - Removed the visible activity log and static security/footer blocks.
 - Replaced the long key list with a collapsible, searchable, paginated manager.
 - Changed automatic and manual rotation to a silent server-side rotation that does not trigger Chat Completion reconnection.
-- Improved switch notifications and added a notification test button.
+- Improved switch notifications.
 - Shortened the `5xx` setting label.
-
-## 1.0.1
-
-- Fixed Termux installation path for per-user SillyTavern extensions.
-
-## 1.0.0
-
-- Initial KeyPilot prototype.
