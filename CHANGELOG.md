@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.3
+
+- Fixed a JavaScript module parsing error that prevented the extension settings panel from loading.
+- Corrected escaping in the copied `allowKeysExposure` Termux command.
+
 ## 1.1.2
 
 - Removed references to the unreleased prototype name.

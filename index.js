@@ -16,7 +16,7 @@ import {
 
 const EXTENSION_NAME = 'tmrw_keyflow';
 const DISPLAY_NAME = 'TMRW—KeyFlow';
-const EXTENSION_VERSION = '1.1.2';
+const EXTENSION_VERSION = '1.1.3';
 const GENERATE_PATH = '/api/backends/chat-completions/generate';
 const LARGE_KEY_COUNT = 30;
 
@@ -561,7 +561,7 @@ async function bulkDeleteKeys(mode) {
 async function copyExposureFixCommand() {
     const command = `cd ~/SillyTavern || exit
 cp config.yaml "config.yaml.backup-$(date +%Y%m%d-%H%M%S)"
-sed -i -E 's/^([[:space:]]*allowKeysExposure:[[:space:]]*)true([[:space:]]*(#.*)?)$/\1false\2/' config.yaml
+sed -i -E 's/^([[:space:]]*allowKeysExposure:[[:space:]]*)true([[:space:]]*(#.*)?)$/\\1false\\2/' config.yaml
 grep -n "allowKeysExposure" config.yaml
 bash start.sh`;
     try {
