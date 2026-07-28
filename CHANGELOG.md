@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.4
+
+- Fixed the legacy key-cleanup buttons collapsing into narrow vertical columns on mobile.
+- Made both bulk-cleanup actions full-width and readable on small screens.
+
 ## 1.1.3
 
 - Fixed a JavaScript module parsing error that prevented the extension settings panel from loading.
