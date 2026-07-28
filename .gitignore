@@ -1,0 +1,6 @@
+*.zip
+*.backup*
+node_modules/
+secrets.json
+config.yaml
+.DS_Store

@@ -1,0 +1,47 @@
+## Installation on Termux
+
+Stop SillyTavern before installing.
+Then copy and paste the entire command block below into Termux:
+
+คัดลอกคำสั่งทั้งก้อนนี้ไปวางใน Termux หลังปิด SillyTavern ด้วย Ctrl+C
+
+
+
+
+cd ~/SillyTavern || exit
+pkg install unzip -y
+
+ZIP="$(ls -t ~/storage/downloads/*TMRW*KeyFlow*.zip ~/storage/downloads/*KeyFlow*.zip 2>/dev/null | head -n 1)"
+
+if [ -z "$ZIP" ]; then
+  echo "❌ ไม่พบ ZIP ของ TMRW—KeyFlow ในโฟลเดอร์ Download"
+  exit 1
+fi
+
+TMP="$(mktemp -d)"
+unzip -oq "$ZIP" -d "$TMP"
+MANIFEST="$(find "$TMP" -type f -name manifest.json | while read -r FILE; do grep -q 'TMRW—KeyFlow' "$FILE" && echo "$FILE"; done | head -n 1)"
+
+if [ -z "$MANIFEST" ]; then
+  echo "❌ ZIP ไม่ถูกต้องหรือหา manifest.json ไม่เจอ"
+  rm -rf "$TMP"
+  exit 1
+fi
+
+SOURCE="$(dirname "$MANIFEST")"
+TARGETS="$(find data -mindepth 2 -maxdepth 2 -type d -name extensions 2>/dev/null)"
+
+if [ -z "$TARGETS" ]; then
+  mkdir -p data/default-user/extensions
+  TARGETS="data/default-user/extensions"
+fi
+
+for TARGET in $TARGETS; do
+  rm -rf "$TARGET/SillyTavern-Extension-KeyPilot"
+  rm -rf "$TARGET/SillyTavern-Extension-TMRW-KeyFlow"
+  cp -R "$SOURCE" "$TARGET/SillyTavern-Extension-TMRW-KeyFlow"
+  echo "✅ ติดตั้งไว้ที่: $TARGET/SillyTavern-Extension-TMRW-KeyFlow"
+done
+
+rm -rf "$TMP"
+bash start.sh

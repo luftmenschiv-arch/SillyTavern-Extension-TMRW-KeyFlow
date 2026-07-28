@@ -1,0 +1,10 @@
+ใช้ไฟล์นี้เฉพาะกรณีต้องการแก้ allowKeysExposure ด้วย Termux
+ปิด SillyTavern ด้วย Ctrl+C ก่อน แล้ววางคำสั่งนี้:
+
+cd ~/SillyTavern || exit
+cp config.yaml "config.yaml.backup-$(date +%Y%m%d-%H%M%S)"
+sed -i -E 's/^([[:space:]]*allowKeysExposure:[[:space:]]*)true([[:space:]]*(#.*)?)$/\1false\2/' config.yaml
+grep -n "allowKeysExposure" config.yaml
+bash start.sh
+
+ผลลัพธ์ควรเป็น allowKeysExposure: false

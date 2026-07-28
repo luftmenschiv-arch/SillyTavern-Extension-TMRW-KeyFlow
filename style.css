@@ -1,0 +1,265 @@
+.keyflow-extension {
+    --kf-border: color-mix(in srgb, var(--SmartThemeBodyColor) 22%, transparent);
+    --kf-muted: color-mix(in srgb, var(--SmartThemeBodyColor) 70%, transparent);
+    --kf-accent: var(--SmartThemeQuoteColor);
+    --kf-danger: #b94a48;
+    --kf-warning: #c58a00;
+}
+
+.keyflow-extension .inline-drawer-content {
+    padding: 0.75rem;
+}
+
+.keyflow-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.6rem;
+    margin-bottom: 0.75rem;
+}
+
+.keyflow-summary {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    border: 1px solid var(--kf-border);
+    border-radius: 0.55rem;
+    padding: 0.65rem;
+    min-width: 0;
+}
+
+.keyflow-summary span,
+.keyflow-muted {
+    color: var(--kf-muted);
+    font-size: 0.9em;
+}
+
+.keyflow-summary strong {
+    overflow-wrap: anywhere;
+}
+
+.keyflow-good {
+    color: var(--kf-accent);
+}
+
+.keyflow-switch-row {
+    align-items: flex-start;
+    margin-bottom: 0.8rem;
+}
+
+.keyflow-section {
+    border-top: 1px solid var(--kf-border);
+    padding-top: 0.75rem;
+    margin-top: 0.75rem;
+}
+
+.keyflow-section > summary,
+.keyflow-warning > summary {
+    cursor: pointer;
+    margin-bottom: 0.65rem;
+}
+
+.keyflow-add-box,
+.keyflow-options {
+    display: grid;
+    gap: 0.55rem;
+}
+
+.keyflow-heading-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.55rem;
+    margin-bottom: 0.55rem;
+}
+
+.keyflow-search {
+    flex: 1 1 12rem;
+    min-width: 0;
+}
+
+.keyflow-actions-inline,
+.keyflow-row-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+}
+
+.keyflow-heading-row .keyflow-actions-inline {
+    flex-wrap: nowrap;
+}
+
+#keyflow-add-keys,
+#keyflow-next {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.5rem;
+    white-space: nowrap;
+    word-break: keep-all;
+}
+
+#keyflow-add-keys {
+    width: 100%;
+    min-width: 8rem;
+}
+
+#keyflow-next {
+    width: auto;
+    min-width: 9.5rem;
+}
+
+#keyflow-refresh {
+    flex: 0 0 auto;
+}
+
+.keyflow-key-list {
+    display: grid;
+    gap: 0.45rem;
+    margin-top: 0.5rem;
+}
+
+.keyflow-key-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.5rem;
+    align-items: center;
+    border: 1px solid var(--kf-border);
+    border-radius: 0.55rem;
+    padding: 0.55rem;
+}
+
+.keyflow-key-row.is-active {
+    border-color: var(--kf-accent);
+}
+
+.keyflow-key-meta {
+    min-width: 0;
+}
+
+.keyflow-key-title {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    flex-wrap: wrap;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.keyflow-masked {
+    overflow-wrap: anywhere;
+    margin-top: 0.1rem;
+}
+
+.keyflow-badge {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid var(--kf-accent);
+    color: var(--kf-accent);
+    border-radius: 999px;
+    padding: 0.08rem 0.4rem;
+    font-size: 0.78em;
+    font-weight: 500;
+}
+
+.keyflow-cooldown,
+.keyflow-progress {
+    color: var(--kf-warning);
+    font-size: 0.88em;
+    margin-top: 0.2rem;
+}
+
+.keyflow-danger {
+    border-color: var(--kf-danger) !important;
+}
+
+.keyflow-number-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.55rem;
+    margin-top: 0.65rem;
+}
+
+.keyflow-number-grid label {
+    display: grid;
+    gap: 0.25rem;
+}
+
+.keyflow-warning,
+.keyflow-empty {
+    border: 1px solid var(--kf-border);
+    border-radius: 0.55rem;
+    padding: 0.65rem;
+    overflow-wrap: anywhere;
+}
+
+.keyflow-warning {
+    border-color: var(--kf-warning);
+    margin-bottom: 0.75rem;
+}
+
+.keyflow-warning-item {
+    display: grid;
+    gap: 0.55rem;
+    padding: 0.6rem 0;
+    border-top: 1px solid var(--kf-border);
+}
+
+.keyflow-warning-item:first-of-type {
+    border-top: 0;
+}
+
+.keyflow-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    flex-wrap: wrap;
+    margin-top: 0.6rem;
+}
+
+.keyflow-pagination label {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.keyflow-pagination select {
+    width: auto;
+    min-width: 4rem;
+}
+
+.keyflow-extension code {
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 620px) {
+    .keyflow-summary-grid,
+    .keyflow-number-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .keyflow-key-row {
+        grid-template-columns: 1fr;
+    }
+
+    .keyflow-row-actions .menu_button {
+        flex: 1 1 auto;
+    }
+
+    .keyflow-heading-row {
+        grid-template-columns: 1fr;
+        align-items: stretch;
+    }
+
+    .keyflow-heading-row .keyflow-actions-inline {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        width: 100%;
+    }
+
+    #keyflow-next {
+        width: 100%;
+        min-width: 0;
+    }
+}

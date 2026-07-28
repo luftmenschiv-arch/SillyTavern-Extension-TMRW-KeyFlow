@@ -1,0 +1,212 @@
+TMRW NON-COMMERCIAL ATTRIBUTION LICENSE
+Version 1.0
+
+Copyright (c) 2026 tmrw
+All rights reserved except as expressly granted under this License.
+
+1. DEFINITIONS
+
+“Software” means TMRW—KeyFlow, including its source code,
+documentation, configuration files, user interface elements, and any
+other materials distributed with it.
+
+“Modification” means any change, adaptation, translation, extension,
+derivative work, or other work based on the Software.
+
+“Commercial Use” means any use that is intended for, connected to, or
+results in direct or indirect commercial advantage, financial benefit,
+revenue, compensation, or profit.
+
+Commercial Use includes, but is not limited to:
+
+a. selling, renting, licensing, sublicensing, or charging for the
+   Software or any Modification;
+
+b. including the Software or any Modification in a paid product,
+   paid service, subscription, membership, package, bundle, or platform;
+
+c. providing access to the Software or any Modification in exchange for
+   payment, donations, sponsorship, advertising revenue, or any other
+   financial benefit;
+
+d. using the Software or any Modification to provide paid installation,
+   hosting, configuration, customization, technical support, consulting,
+   or other commercial services;
+
+e. using the Software or any Modification as part of the internal
+   operations, products, services, or commercial activities of a
+   for-profit business or organization;
+
+f. distributing, demonstrating, reviewing, or promoting the Software or
+   any Modification as part of monetized content, advertising, marketing,
+   or commercial promotion; and
+
+g. removing or changing restrictions in this License for the purpose of
+   permitting Commercial Use.
+
+“Non-Commercial Use” means use that does not constitute Commercial Use
+under this License.
+
+2. PERMISSION
+
+Subject to all conditions of this License, you are granted a limited,
+worldwide, royalty-free, non-exclusive, non-transferable, and revocable
+permission to:
+
+a. use the Software for personal, educational, research, hobby, community,
+   or other Non-Commercial purposes;
+
+b. copy the Software for Non-Commercial purposes;
+
+c. inspect, study, modify, translate, and create Modifications of the
+   Software for Non-Commercial purposes; and
+
+d. redistribute the original Software or Modifications for
+   Non-Commercial purposes.
+
+No permission is granted for Commercial Use.
+
+3. ATTRIBUTION
+
+Every copy or redistribution of the Software or any Modification must:
+
+a. retain the following notice:
+
+   “TMRW—KeyFlow was originally created by tmrw.”
+
+b. retain the copyright notice:
+
+   “Copyright (c) 2026 tmrw.”
+
+c. include a complete copy of this License;
+
+d. clearly state whether the Software has been modified; and
+
+e. identify the person or organization responsible for the Modification.
+
+The attribution must be reasonably visible in the repository,
+documentation, download page, About section, extension information,
+or another location normally visible to users.
+
+You may not represent yourself as the original creator of the Software.
+
+4. REDISTRIBUTION AND MODIFICATIONS
+
+You may redistribute the Software or a Modification only if:
+
+a. the redistribution is entirely Non-Commercial;
+
+b. the Software and all Modifications remain licensed under this same
+   License;
+
+c. recipients receive the source code, or are given a clear and freely
+   accessible way to obtain the complete corresponding source code;
+
+d. all copyright, attribution, and license notices are preserved; and
+
+e. no additional terms are imposed that conflict with this License.
+
+You may not relicense the Software or any Modification under another
+license.
+
+5. PROHIBITED USES
+
+You may not:
+
+a. use the Software or any Modification for any Commercial Use;
+
+b. sell or charge money for the Software or any Modification;
+
+c. place the Software or any Modification behind a paid download,
+   subscription, membership, donation requirement, or other payment
+   barrier;
+
+d. bundle the Software or any Modification with a commercial product
+   or service;
+
+e. use the Software or any Modification to generate advertising,
+   sponsorship, affiliate, subscription, or other monetized revenue;
+
+f. offer paid services that substantially depend on the Software or any
+   Modification;
+
+g. remove, hide, alter, or misrepresent the original attribution,
+   copyright notice, or License;
+
+h. imply that tmrw endorses, sponsors, approves, or is affiliated with
+   your version, project, product, service, or organization without
+   prior written permission; or
+
+i. use the name “TMRW—KeyFlow”, the name “tmrw”, or any associated logo
+   or branding in a way that causes confusion regarding the origin or
+   official status of a redistributed or modified version.
+
+6. NO TRADEMARK LICENSE
+
+This License does not grant permission to use any trademark, logo,
+project name, branding, or identity belonging to tmrw, except where
+reasonably necessary to provide the attribution required by this License.
+
+Modified versions must be clearly identified as unofficial and must not
+be presented as an official release of TMRW—KeyFlow.
+
+7. THIRD-PARTY COMPONENTS
+
+Any third-party software, libraries, code, or materials included with the
+Software remain subject to their respective licenses.
+
+This License applies only to material for which tmrw owns or controls the
+necessary rights.
+
+8. TERMINATION
+
+Your rights under this License terminate automatically if you violate
+any term of this License.
+
+Upon termination, you must immediately stop using, modifying, copying,
+and distributing the Software and all Modifications, and you must remove
+all copies under your control.
+
+Termination does not limit any other rights or remedies available to the
+copyright holder.
+
+9. EXCEPTIONS
+
+No exception to the Commercial Use restriction is valid unless it is
+granted in advance through an explicit written agreement signed or
+otherwise verifiably approved by tmrw.
+
+Silence, failure to enforce a violation, public availability of the source
+code, or acceptance of a contribution does not constitute permission for
+Commercial Use.
+
+10. DISCLAIMER OF WARRANTY
+
+THE SOFTWARE IS PROVIDED “AS IS” AND “AS AVAILABLE”, WITHOUT WARRANTY OF
+ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, ACCURACY,
+RELIABILITY, SECURITY, COMPATIBILITY, AND NON-INFRINGEMENT.
+
+YOU USE THE SOFTWARE ENTIRELY AT YOUR OWN RISK.
+
+11. LIMITATION OF LIABILITY
+
+TO THE MAXIMUM EXTENT PERMITTED BY LAW, TMRW AND ALL CONTRIBUTORS SHALL
+NOT BE LIABLE FOR ANY CLAIM, LOSS, DAMAGE, DATA LOSS, API KEY LOSS,
+ACCOUNT RESTRICTION, SERVICE INTERRUPTION, SECURITY INCIDENT, COST,
+EXPENSE, OR OTHER LIABILITY ARISING FROM OR RELATED TO THE SOFTWARE,
+ITS USE, ITS INABILITY TO BE USED, OR ANY MODIFICATION OR
+REDISTRIBUTION OF IT.
+
+12. SEVERABILITY
+
+If any provision of this License is found to be invalid or unenforceable,
+the remaining provisions will remain in effect to the fullest extent
+permitted by law.
+
+13. ENTIRE LICENSE
+
+This License constitutes the complete terms under which the Software may
+be used, copied, modified, or redistributed.
+
+Any right not expressly granted under this License is reserved by tmrw.
