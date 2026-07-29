@@ -1,5 +1,43 @@
 # Changelog
 
+## 1.3.4
+- Redesigned the diagnostic modal using a mobile-first header/content/footer layout.
+- Added clear visual hierarchy: product label, report title, and provider badge.
+- Made only the report content scroll while the header and copy actions stay visible.
+- Changed the close control to a compact 44px circular button in the top-right corner.
+- Made copy buttons fill the footer width; the current report is the primary action.
+- Hide **Copy all** when only one diagnostic report exists.
+- Added safe-area spacing for iPhone and improved small-screen behavior.
+
+## 1.3.3
+- Moved the report close button to the top-right corner for easier mobile use.
+- Removed the extra bottom close button from the diagnostic dialog.
+- Kept the copy buttons in a horizontal two-button layout for a cleaner mobile UI.
+
+## 1.3.2
+- Changed diagnostics UI so users read the report before copying it.
+- Replaced the top copy buttons with **ดูรายละเอียดล่าสุด** and an in-dialog copy action.
+- Added a readable diagnostic dialog window with the full `TMRW—KeyFlow Diagnostic Report`.
+- Simplified each saved diagnostic card to a short summary plus a **ดูรายละเอียด** button.
+
+## 1.3.1
+
+- จัดรูปแบบ Diagnostic Report ใหม่เป็น Quick Summary, Request Flow, Suggested Checks และ Technical Details
+- เพิ่มคำแนะนำเบื้องต้นตามสาเหตุที่ตรวจพบ เพื่อให้ส่งขอความช่วยเหลือได้ง่ายขึ้น
+- ตัดบันทึกคำขอทดสอบที่สำเร็จออก และเก็บเฉพาะ 2 ปัญหาล่าสุด
+- แสดงเวลาท้องถิ่นพร้อมเขตเวลา และตัดบรรทัดรายละเอียด Error ที่ยาวเกินไปให้อ่านง่ายขึ้น
+
+## 1.3.0
+
+- Added a privacy-safe **ตรวจสอบคำขอล่าสุด** diagnostic panel with up to 10 recent problem/test records.
+- Records the first HTTP/network result, key-rotation outcome, retry result, final cause, elapsed time, provider, model, generic device/browser information, and request ID.
+- Added one-tap copy buttons for the latest report, each individual report, or all reports.
+- Added an optional minimal connection test using the currently selected model.
+- Added detailed classification for quota, authentication, credits, context length, safety, model/endpoint, timeout, gateway, provider outage, overloaded provider, network failure, closed streams, and maximum retries.
+- Monitors streaming responses for connection failures or provider error frames that occur after HTTP 200.
+- Diagnostic reports redact API keys, tokens, cookies, authorization values, prompt-like fields, request bodies, and long quoted content.
+- Existing key management, migration cleanup, cooldown, provider selection, and silent failover behavior remain unchanged.
+
 ## 1.2.2
 
 - Put destructive bulk key cleanup actions inside a nested section that is collapsed by default.

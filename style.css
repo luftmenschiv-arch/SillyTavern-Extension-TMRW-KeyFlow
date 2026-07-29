@@ -394,3 +394,293 @@
         grid-template-columns: 1fr;
     }
 }
+
+.keyflow-diagnostic-overview {
+    display: grid;
+    gap: 0.2rem;
+    border: 1px solid var(--kf-border);
+    border-radius: 0.55rem;
+    padding: 0.65rem;
+    margin-bottom: 0.55rem;
+    overflow-wrap: anywhere;
+}
+
+.keyflow-diagnostic-privacy,
+.keyflow-test-note {
+    margin-bottom: 0.55rem;
+}
+
+.keyflow-diagnostic-actions {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.45rem;
+    margin-bottom: 0.55rem;
+}
+
+.keyflow-diagnostic-actions .menu_button,
+.keyflow-diagnostic-copy,
+.keyflow-diagnostic-view {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-width: 0;
+    min-height: 2.6rem;
+    white-space: normal;
+    text-align: center;
+}
+
+.keyflow-diagnostic-list {
+    display: grid;
+    gap: 0.45rem;
+    margin-top: 0.55rem;
+}
+
+.keyflow-diagnostic-item {
+    border: 1px solid var(--kf-border);
+    border-radius: 0.55rem;
+    overflow: hidden;
+}
+
+.keyflow-diagnostic-item > summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.55rem;
+    padding: 0.65rem;
+    cursor: pointer;
+}
+
+.keyflow-diagnostic-summary-main {
+    display: grid;
+    gap: 0.1rem;
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.keyflow-diagnostic-content {
+    display: grid;
+    gap: 0.45rem;
+    padding: 0.65rem;
+    border-top: 1px solid var(--kf-border);
+}
+
+.keyflow-diagnostic-inline-actions {
+    display: flex;
+    gap: 0.45rem;
+    margin-top: 0.2rem;
+}
+
+ .keyflow-report-dialog {
+    width: min(760px, calc(100vw - 1rem));
+    height: min(88dvh, 820px);
+    max-width: 100%;
+    max-height: calc(100dvh - 1rem);
+    border: 1px solid var(--kf-border);
+    border-radius: 1rem;
+    padding: 0;
+    overflow: hidden;
+    background: var(--SmartThemeBlurTintColor, var(--black30a));
+    color: var(--SmartThemeBodyColor, inherit);
+}
+
+.keyflow-report-dialog[open] {
+    display: flex;
+    flex-direction: column;
+}
+
+.keyflow-report-dialog::backdrop {
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(2px);
+}
+
+.keyflow-report-header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    gap: 0.75rem;
+    padding: 0.9rem 0.9rem 0.75rem;
+    border-bottom: 1px solid var(--kf-border);
+    background: var(--SmartThemeBlurTintColor, var(--black30a));
+    flex: 0 0 auto;
+}
+
+.keyflow-report-heading {
+    display: grid;
+    gap: 0.15rem;
+    min-width: 0;
+}
+
+.keyflow-report-eyebrow {
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.72;
+}
+
+#keyflow-report-title {
+    display: block;
+    min-width: 0;
+    font-size: clamp(1.05rem, 4vw, 1.35rem);
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+}
+
+.keyflow-report-provider {
+    width: fit-content;
+    max-width: 100%;
+    padding: 0.15rem 0.5rem;
+    border: 1px solid var(--kf-border);
+    border-radius: 999px;
+    font-size: 0.78rem;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+}
+
+.keyflow-report-close-icon {
+    display: inline-grid;
+    place-items: center;
+    width: 2.75rem;
+    min-width: 2.75rem;
+    height: 2.75rem;
+    min-height: 2.75rem;
+    margin: 0;
+    padding: 0;
+    border: 1px solid var(--kf-border);
+    border-radius: 50%;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    font-size: 1.25rem;
+    line-height: 1;
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+.keyflow-report-close-icon:hover,
+.keyflow-report-close-icon:focus-visible {
+    background: rgba(255,255,255,0.08);
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+}
+
+.keyflow-report-body {
+    flex: 1 1 auto;
+    min-height: 0;
+    margin: 0;
+    padding: 0.85rem;
+    border: 0;
+    border-radius: 0;
+    background: rgba(0,0,0,0.12);
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow: auto;
+    overscroll-behavior: contain;
+    font-size: clamp(0.78rem, 3.2vw, 0.92rem);
+    line-height: 1.5;
+}
+
+.keyflow-report-actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    gap: 0.55rem;
+    padding: 0.75rem 0.85rem max(0.75rem, env(safe-area-inset-bottom));
+    border-top: 1px solid var(--kf-border);
+    background: var(--SmartThemeBlurTintColor, var(--black30a));
+    flex: 0 0 auto;
+}
+
+.keyflow-report-actions-single {
+    grid-template-columns: 1fr;
+}
+
+.keyflow-report-actions .menu_button {
+    width: 100%;
+    min-width: 0;
+    min-height: 2.75rem;
+    margin: 0;
+    padding: 0.55rem 0.7rem;
+    white-space: nowrap;
+    font-size: 0.92rem;
+    line-height: 1.2;
+}
+
+.keyflow-report-primary {
+    font-weight: 700;
+    border-width: 2px;
+}
+
+.keyflow-report-secondary {
+    opacity: 0.9;
+}
+
+.keyflow-diagnostic-field {
+    display: grid;
+    grid-template-columns: minmax(7rem, 0.38fr) minmax(0, 1fr);
+    gap: 0.55rem;
+    align-items: start;
+}
+
+.keyflow-diagnostic-field strong {
+    font-weight: 500;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+@media (max-width: 620px) {
+    .keyflow-diagnostic-actions,
+    .keyflow-diagnostic-field {
+        grid-template-columns: 1fr;
+    }
+
+    .keyflow-diagnostic-item > summary {
+        align-items: flex-start;
+    }
+
+    .keyflow-diagnostic-inline-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .keyflow-report-dialog {
+        width: calc(100vw - 0.5rem);
+        height: min(92dvh, 820px);
+        max-height: calc(100dvh - 0.5rem);
+        border-radius: 0.85rem;
+    }
+
+    .keyflow-report-header {
+        padding: 0.75rem;
+    }
+
+    .keyflow-report-body {
+        padding: 0.75rem;
+    }
+
+    .keyflow-report-actions {
+        grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+    }
+
+    .keyflow-report-actions-single {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 360px) {
+    .keyflow-report-actions {
+        grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+        gap: 0.4rem;
+    }
+
+    .keyflow-report-actions .menu_button {
+        padding-left: 0.4rem;
+        padding-right: 0.4rem;
+        font-size: 0.82rem;
+    }
+
+    .keyflow-report-actions-single {
+        grid-template-columns: 1fr;
+    }
+}

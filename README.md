@@ -13,6 +13,9 @@ TMRW—KeyFlow keeps the current key until a real API error occurs, then switche
 - One-tap bulk cleanup inside the key manager for large key lists
 - Detects `allowKeysExposure: true`, provides a ready-to-copy Termux fix command, and rechecks after restart
 - Supports bulk key import, manual selection, rename, delete, and cooldowns
+- Privacy-safe diagnostics for the latest 10 failed/test requests, including the initial result, rotation result, retry result, final cause, elapsed time, provider, model, and generic device/browser information
+- Copyable support reports with API keys, prompts, chat content, request bodies, cookies, and tokens excluded
+- Optional minimal connection test using the currently selected model
 
 ## Install on Termux
 
@@ -26,6 +29,8 @@ If ZerxzLib is installed, disable or remove it before using KeyFlow to prevent b
 ## Security
 
 Raw API keys are sent only to SillyTavern's own `/api/secrets/write` endpoint. KeyFlow reads masked key metadata from the secret manager and does not place raw keys in extension settings or logs.
+
+Diagnostic records are limited to 10 entries and store only technical metadata needed for troubleshooting. Keys, authorization values, prompts, chat content, request bodies, cookies, tokens, and long quoted content are redacted or excluded before storage.
 
 ## License
 
