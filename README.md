@@ -8,9 +8,10 @@ TMRW—KeyFlow keeps the current key until a real API error occurs, then switche
 
 - Switches only after configured errors (`401/403`, `429`, `402`, optional `5xx`)
 - Retries the interrupted request once without creating an infinite loop
+- Optionally follows the active Chat Completion source between Google AI Studio and OpenRouter
 - Mobile-friendly key manager with search and pagination
-- One-tap cleanup for oversized key lists left by older extensions
-- Detects `allowKeysExposure: true` and provides a ready-to-copy Termux fix command
+- One-tap bulk cleanup inside the key manager for large key lists
+- Detects `allowKeysExposure: true`, provides a ready-to-copy Termux fix command, and rechecks after restart
 - Supports bulk key import, manual selection, rename, delete, and cooldowns
 
 ## Install on Termux

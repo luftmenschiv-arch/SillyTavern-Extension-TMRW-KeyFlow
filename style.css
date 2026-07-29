@@ -46,6 +46,11 @@
     margin-bottom: 0.8rem;
 }
 
+.keyflow-follow-source {
+    align-items: flex-start;
+    margin-top: 0.55rem;
+}
+
 .keyflow-section {
     border-top: 1px solid var(--kf-border);
     padding-top: 0.75rem;
@@ -211,16 +216,40 @@
     border-top: 0;
 }
 
+.keyflow-bulk-tools {
+    border: 1px solid var(--kf-border);
+    border-radius: 0.55rem;
+    margin: 0.55rem 0 0.75rem;
+    overflow: hidden;
+}
+
+.keyflow-bulk-tools[hidden] {
+    display: none;
+}
+
+.keyflow-bulk-tools > summary {
+    cursor: pointer;
+    padding: 0.65rem;
+    user-select: none;
+}
+
+.keyflow-bulk-content {
+    display: grid;
+    gap: 0.55rem;
+    padding: 0 0.65rem 0.65rem;
+    border-top: 1px solid var(--kf-border);
+}
+
 /* Keep migration cleanup actions readable, especially on mobile themes
    where SillyTavern may shrink .menu_button to its minimum content width. */
-#keyflow-overflow-warning .keyflow-actions-inline {
+#keyflow-bulk-tools .keyflow-actions-inline {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     width: 100%;
     align-items: stretch;
 }
 
-#keyflow-overflow-warning .keyflow-actions-inline .menu_button {
+#keyflow-bulk-tools .keyflow-actions-inline .menu_button {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -258,6 +287,79 @@
     overflow-wrap: anywhere;
 }
 
+
+.keyflow-toast-container {
+    position: fixed;
+    top: max(0.75rem, env(safe-area-inset-top));
+    right: max(0.75rem, env(safe-area-inset-right));
+    z-index: 1000000;
+    display: grid;
+    gap: 0.5rem;
+    width: min(26rem, calc(100vw - 1.5rem));
+    pointer-events: none;
+}
+
+.keyflow-toast {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.65rem;
+    align-items: start;
+    padding: 0.75rem;
+    border: 1px solid var(--SmartThemeQuoteColor);
+    border-radius: 0.65rem;
+    background: var(--SmartThemeBlurTintColor, rgba(25, 25, 25, 0.96));
+    color: var(--SmartThemeBodyColor);
+    box-shadow: 0 0.35rem 1rem rgba(0, 0, 0, 0.35);
+    pointer-events: auto;
+    animation: keyflow-toast-in 180ms ease-out;
+    overflow-wrap: anywhere;
+}
+
+.keyflow-toast.is-success {
+    border-color: #4f9b67;
+}
+
+.keyflow-toast.is-warning {
+    border-color: #c58a00;
+}
+
+.keyflow-toast.is-error {
+    border-color: #b94a48;
+}
+
+.keyflow-toast strong {
+    display: block;
+    margin-bottom: 0.2rem;
+}
+
+.keyflow-toast-close {
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    font-size: 1.4rem;
+    line-height: 1;
+    padding: 0 0.15rem;
+    cursor: pointer;
+}
+
+.keyflow-toast.is-leaving {
+    opacity: 0;
+    transform: translateY(-0.3rem);
+    transition: opacity 180ms ease, transform 180ms ease;
+}
+
+@keyframes keyflow-toast-in {
+    from {
+        opacity: 0;
+        transform: translateY(-0.3rem);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 @media (max-width: 620px) {
     .keyflow-summary-grid,
     .keyflow-number-grid {
@@ -288,7 +390,7 @@
         min-width: 0;
     }
 
-    #keyflow-overflow-warning .keyflow-actions-inline {
+    #keyflow-bulk-tools .keyflow-actions-inline {
         grid-template-columns: 1fr;
     }
 }

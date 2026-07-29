@@ -4,7 +4,7 @@ import {
     getRequestHeaders,
     saveSettingsDebounced,
 } from '../../../../script.js';
-import { extension_settings } from '../../../extensions.js';
+import { extension_settings, extensionNames } from '../../../extensions.js';
 import {
     SECRET_KEYS,
     secret_state,
@@ -16,7 +16,7 @@ import {
 
 const EXTENSION_NAME = 'tmrw_keyflow';
 const DISPLAY_NAME = 'TMRW—KeyFlow';
-const EXTENSION_VERSION = '1.1.4';
+const EXTENSION_VERSION = '1.2.2';
 const GENERATE_PATH = '/api/backends/chat-completions/generate';
 const LARGE_KEY_COUNT = 30;
 
@@ -43,6 +43,7 @@ const DEFAULT_SETTINGS = Object.freeze({
     enabled: true,
     autoRetry: true,
     notifications: true,
+    followChatCompletionSource: true,
     rotateAuthErrors: true,
     rotateQuotaErrors: true,
     rotateCreditErrors: true,
@@ -96,25 +97,54 @@ function persistSettings() {
     saveSettingsDebounced();
 }
 
+function getToastContainer() {
+    let container = document.querySelector('#tmrw-keyflow-toast-container');
+    if (container) return container;
+
+    container = document.createElement('div');
+    container.id = 'tmrw-keyflow-toast-container';
+    container.className = 'keyflow-toast-container';
+    container.setAttribute('aria-live', 'polite');
+    container.setAttribute('aria-atomic', 'false');
+    document.body.appendChild(container);
+    return container;
+}
+
+function showKeyFlowToast(type, message) {
+    const container = getToastContainer();
+    const toast = document.createElement('div');
+    toast.className = `keyflow-toast is-${['success', 'warning', 'error'].includes(type) ? type : 'info'}`;
+    toast.setAttribute('role', type === 'error' ? 'alert' : 'status');
+
+    const content = document.createElement('div');
+    const title = document.createElement('strong');
+    title.textContent = DISPLAY_NAME;
+    const body = document.createElement('div');
+    body.textContent = message;
+    content.append(title, body);
+
+    const close = document.createElement('button');
+    close.type = 'button';
+    close.className = 'keyflow-toast-close';
+    close.setAttribute('aria-label', 'ปิดการแจ้งเตือน');
+    close.textContent = '×';
+
+    const remove = () => {
+        toast.classList.add('is-leaving');
+        setTimeout(() => toast.remove(), 180);
+    };
+    close.addEventListener('click', remove);
+    toast.append(content, close);
+    container.prepend(toast);
+
+    while (container.children.length > 3) container.lastElementChild?.remove();
+    setTimeout(remove, 6500);
+}
+
 function notify(type, message, force = false) {
     if (!force && !settings.notifications && type !== 'error') return false;
-    const toaster = globalThis.toastr;
-    if (!toaster) {
-        console.info(`[${DISPLAY_NAME}] ${message}`);
-        return false;
-    }
-
-    const method = typeof toaster[type] === 'function' ? type : 'info';
-    // Delay by one paint so notifications triggered during fetch interception are visible.
-    setTimeout(() => {
-        toaster[method](message, DISPLAY_NAME, {
-            timeOut: 6500,
-            extendedTimeOut: 2500,
-            closeButton: true,
-            preventDuplicates: false,
-            newestOnTop: true,
-        });
-    }, 40);
+    console.info(`[${DISPLAY_NAME}] ${message}`);
+    setTimeout(() => showKeyFlowToast(type, message), 60);
     return true;
 }
 
@@ -129,6 +159,30 @@ function providerFromSource(source) {
 
 function currentProvider() {
     return PROVIDERS[settings.selectedProvider] || PROVIDERS.makersuite;
+}
+
+function getCurrentChatCompletionSource() {
+    return String(document.querySelector('#chat_completion_source')?.value || '');
+}
+
+function syncProviderFromChatCompletionSource(source, showNotification = false) {
+    if (!settings?.followChatCompletionSource) return false;
+    const provider = providerFromSource(String(source || ''));
+    if (!provider || settings.selectedProvider === provider.id) return false;
+
+    settings.selectedProvider = provider.id;
+    keyListState = { page: 0, query: '' };
+    persistSettings();
+    renderAll();
+
+    if (showNotification) {
+        notify('info', `เปลี่ยนผู้ให้บริการเป็น ${provider.label} ตามแหล่งที่มาของ Chat Completion`);
+    }
+    return true;
+}
+
+function handleChatCompletionSourceChanged(source) {
+    syncProviderFromChatCompletionSource(source, true);
 }
 
 function getSecrets(provider) {
@@ -594,14 +648,6 @@ function buildUi() {
                     <div><b><code>allowKeysExposure</code> ยังเป็น <code>true</code></b><br>KeyFlow ไม่ต้องใช้ค่านี้ แนะนำให้เปลี่ยนกลับเป็น <code>false</code> แล้วรีสตาร์ต SillyTavern จากนั้นกลับมาหน้านี้ ระบบจะตรวจสอบให้อัตโนมัติ</div>
                     <button id="keyflow-copy-config-fix" type="button" class="menu_button">คัดลอกคำสั่ง Termux</button>
                 </div>
-                <div id="keyflow-overflow-warning" class="keyflow-warning-item" hidden>
-                    <div id="keyflow-overflow-text"></div>
-                    <div class="keyflow-actions-inline">
-                        <button type="button" class="menu_button" data-keyflow-bulk="keep-active">เก็บคีย์ที่ใช้อยู่ 1 อัน</button>
-                        <button type="button" class="menu_button keyflow-danger" data-keyflow-bulk="delete-all">ลบทั้งหมด</button>
-                    </div>
-                    <div id="keyflow-cleanup-progress" class="keyflow-progress" hidden></div>
-                </div>
             </details>
 
             <div class="keyflow-summary-grid">
@@ -626,6 +672,10 @@ function buildUi() {
                     <option value="makersuite">Google AI Studio</option>
                     <option value="openrouter">OpenRouter</option>
                 </select>
+                <label class="checkbox_label keyflow-follow-source" for="keyflow-follow-source">
+                    <input id="keyflow-follow-source" type="checkbox">
+                    <span>เลือกผู้ให้บริการตามแหล่งที่มาของ Chat Completion อัตโนมัติ</span>
+                </label>
             </div>
 
             <details class="keyflow-section">
@@ -647,6 +697,18 @@ function buildUi() {
                         <button id="keyflow-next" type="button" class="menu_button">สลับคีย์ถัดไป</button>
                     </div>
                 </div>
+                <details id="keyflow-bulk-tools" class="keyflow-bulk-tools" hidden>
+                    <summary><b>เครื่องมือล้างคีย์จำนวนมาก</b></summary>
+                    <div class="keyflow-bulk-content">
+                        <div id="keyflow-overflow-text"></div>
+                        <div class="keyflow-muted">ซ่อนไว้เพื่อป้องกันการกดพลาด และระบบจะถามยืนยันอีกครั้งก่อนลบ</div>
+                        <div class="keyflow-actions-inline">
+                            <button type="button" class="menu_button" data-keyflow-bulk="keep-active">เก็บคีย์ที่ใช้อยู่ 1 อัน</button>
+                            <button type="button" class="menu_button keyflow-danger" data-keyflow-bulk="delete-all">ลบทั้งหมด</button>
+                        </div>
+                        <div id="keyflow-cleanup-progress" class="keyflow-progress" hidden></div>
+                    </div>
+                </details>
                 <div id="keyflow-key-list" class="keyflow-key-list"></div>
                 <div id="keyflow-pagination" class="keyflow-pagination">
                     <button id="keyflow-prev-page" type="button" class="menu_button">ก่อนหน้า</button>
@@ -704,6 +766,14 @@ function bindUi() {
         persistSettings();
         renderAll();
     });
+    uiRoot.querySelector('#keyflow-follow-source').addEventListener('change', event => {
+        settings.followChatCompletionSource = Boolean(event.target.checked);
+        persistSettings();
+        if (settings.followChatCompletionSource) {
+            syncProviderFromChatCompletionSource(getCurrentChatCompletionSource(), true);
+        }
+        renderSummary();
+    });
     uiRoot.querySelector('#keyflow-add-keys').addEventListener('click', addKeysFromUi);
     uiRoot.querySelector('#keyflow-refresh').addEventListener('click', async () => {
         await refreshState();
@@ -754,6 +824,7 @@ function populateSettingsControls() {
         '#keyflow-enabled': settings.enabled,
         '#keyflow-auto-retry': settings.autoRetry,
         '#keyflow-notifications': settings.notifications,
+        '#keyflow-follow-source': settings.followChatCompletionSource,
         '#keyflow-auth': settings.rotateAuthErrors,
         '#keyflow-quota': settings.rotateQuotaErrors,
         '#keyflow-credit': settings.rotateCreditErrors,
@@ -884,41 +955,55 @@ function renderKeyList() {
 }
 
 function detectLegacyExtension() {
-    return Boolean(
-        document.querySelector('gemini-layouts') ||
-        document.querySelector('#api_key_makersuite_custom') ||
-        [...document.querySelectorAll('.inline-drawer-header')].some(element => /zerxzlib/i.test(element.textContent || ''))
+    // DOM nodes from a deleted extension can remain until the page is reloaded.
+    // Use SillyTavern's installed/enabled extension registry instead of stale DOM markers.
+    return extensionNames.some(name =>
+        /zerxzlib/i.test(name) && !extension_settings.disabledExtensions.includes(name),
     );
 }
 
 function renderMigrationTools() {
     if (!uiRoot) return;
-    const provider = currentProvider();
-    const count = getSecrets(provider).length;
     const legacyFound = detectLegacyExtension();
     legacyConflict = legacyFound;
     const exposureFound = allowKeysExposure === true;
-    const overflowFound = count >= LARGE_KEY_COUNT;
     const panel = uiRoot.querySelector('#keyflow-migration-tools');
 
     uiRoot.querySelector('#keyflow-legacy-warning').hidden = !legacyFound;
     uiRoot.querySelector('#keyflow-exposure-warning').hidden = !exposureFound;
-    uiRoot.querySelector('#keyflow-overflow-warning').hidden = !overflowFound;
-    uiRoot.querySelector('#keyflow-overflow-text').innerHTML = overflowFound
-        ? `<b>พบ ${count} คีย์ของ ${provider.label}</b><br>อาจเป็นรายการซ้ำที่เกิดจาก ZerxzLib รุ่นเก่า คุณสามารถเก็บคีย์ที่กำลังใช้อยู่ไว้เพียงอันเดียวได้ในครั้งเดียว`
-        : '';
+    panel.hidden = !(legacyFound || exposureFound);
 
-    panel.hidden = !(legacyFound || exposureFound || overflowFound);
-    if (!panel.hidden && !panel.dataset.autoOpened) {
-        panel.open = overflowFound || exposureFound;
+    if (legacyConflict) uninstallFetchInterceptor();
+    else installFetchInterceptor();
+
+    if (panel.hidden) {
+        panel.open = false;
+        delete panel.dataset.autoOpened;
+    } else if (!panel.dataset.autoOpened) {
+        panel.open = true;
         panel.dataset.autoOpened = 'true';
     }
+}
+
+function renderBulkTools() {
+    if (!uiRoot) return;
+    const provider = currentProvider();
+    const count = getSecrets(provider).length;
+    const bulkTools = uiRoot.querySelector('#keyflow-bulk-tools');
+    const overflowFound = count >= LARGE_KEY_COUNT;
+
+    bulkTools.hidden = !overflowFound;
+    if (!overflowFound) bulkTools.open = false;
+    uiRoot.querySelector('#keyflow-overflow-text').innerHTML = overflowFound
+        ? `<b>พบ ${count} คีย์ของ ${provider.label}</b><br>เปิดหัวข้อนี้เมื่อต้องการเก็บคีย์ที่กำลังใช้อยู่เพียง 1 อัน หรือลบทั้งหมด`
+        : '';
 }
 
 function renderAll() {
     if (!uiRoot) return;
     populateSettingsControls();
     renderMigrationTools();
+    renderBulkTools();
     renderSummary();
     renderKeyList();
 }
@@ -929,21 +1014,26 @@ function subscribe(eventName, handler) {
     subscriptions.push([eventName, handler]);
 }
 
-async function refreshExposureSetting() {
+async function refreshExposureSetting(forceRender = false) {
     try {
         const value = await canViewSecrets();
         if (typeof value !== 'boolean') return;
         const changed = allowKeysExposure !== value;
         allowKeysExposure = value;
-        if (changed) renderMigrationTools();
+        if (changed || forceRender) renderMigrationTools();
+
+        // Keep checking while the warning is visible. This clears stale warnings
+        // automatically after the user edits config.yaml and restarts the server.
+        if (allowKeysExposure === true) scheduleExposureRefresh(3000);
     } catch {
         // Keep the previous value if the server is still restarting.
+        scheduleExposureRefresh(3000);
     }
 }
 
-function scheduleExposureRefresh() {
+function scheduleExposureRefresh(delay = 1200) {
     clearTimeout(exposureRefreshTimer);
-    exposureRefreshTimer = setTimeout(refreshExposureSetting, 1200);
+    exposureRefreshTimer = setTimeout(() => refreshExposureSetting(), delay);
 }
 
 function handleVisibilityChange() {
@@ -975,6 +1065,7 @@ export function onDisable() {
         eventSource.removeListener?.(eventName, handler);
     }
     uiRoot?.remove();
+    document.querySelector('#tmrw-keyflow-toast-container')?.remove();
     uiRoot = null;
     initialized = false;
 }
@@ -997,6 +1088,7 @@ async function initialize() {
     }
 
     bindUi();
+    syncProviderFromChatCompletionSource(getCurrentChatCompletionSource(), false);
     renderAll();
     window.addEventListener('focus', scheduleExposureRefresh);
     document.addEventListener('visibilitychange', handleVisibilityChange);
@@ -1006,6 +1098,7 @@ async function initialize() {
         notify('warning', 'พบส่วนเสริมสลับคีย์รุ่นเก่า จึงพัก KeyFlow ไว้ก่อน กรุณาปิดตัวเก่าแล้วรีโหลดหน้า', true);
     }
 
+    subscribe(event_types.CHATCOMPLETION_SOURCE_CHANGED, handleChatCompletionSourceChanged);
     subscribe(event_types.SECRET_WRITTEN, refreshFromSecretEvent);
     subscribe(event_types.SECRET_ROTATED, refreshFromSecretEvent);
     subscribe(event_types.SECRET_DELETED, refreshFromSecretEvent);

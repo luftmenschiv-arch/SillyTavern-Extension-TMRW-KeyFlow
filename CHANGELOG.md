@@ -1,5 +1,25 @@
 # Changelog
 
+## 1.2.2
+
+- Put destructive bulk key cleanup actions inside a nested section that is collapsed by default.
+- Added a visible safety note and kept the existing confirmation prompt before any bulk deletion.
+- Automatically closes the cleanup section when the selected provider no longer has a large key list.
+
+## 1.2.1
+
+- Hide the old-extension migration panel completely after ZerxzLib is no longer active and `allowKeysExposure` is `false`.
+- Move large key-list cleanup controls into the regular key manager so having 30+ keys no longer keeps the migration warning panel visible.
+- Remove the ZerxzLib-specific duplicate warning from ordinary bulk key management.
+
+## 1.2.0
+
+- Fixed stale ZerxzLib and `allowKeysExposure` warnings remaining visible after cleanup.
+- Detects ZerxzLib from SillyTavern's enabled-extension registry instead of leftover page elements.
+- Added an optional setting to follow the current Chat Completion source automatically between Google AI Studio and OpenRouter.
+- Fixed key-switch notifications with a dedicated mobile-safe notification layer that remains visible above SillyTavern panels.
+- Renamed the migration panel when only the large-key cleanup tool is needed.
+
 ## 1.1.4
 
 - Fixed the legacy key-cleanup buttons collapsing into narrow vertical columns on mobile.
