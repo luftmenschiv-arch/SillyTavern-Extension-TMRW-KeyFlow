@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.3.5
+- Enabled automatic extension updates through SillyTavern.
+- Users who update to this version through GitHub will be eligible for future automatic updates.
+- No changes to API keys or existing KeyFlow settings.
+
 ## 1.3.4
 - Redesigned the diagnostic modal using a mobile-first header/content/footer layout.
 - Added clear visual hierarchy: product label, report title, and provider badge.

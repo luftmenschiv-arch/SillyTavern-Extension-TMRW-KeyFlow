@@ -16,7 +16,7 @@ import {
 
 const EXTENSION_NAME = 'tmrw_keyflow';
 const DISPLAY_NAME = 'TMRW—KeyFlow';
-const EXTENSION_VERSION = '1.3.4';
+const EXTENSION_VERSION = '1.3.5';
 const GENERATE_PATH = '/api/backends/chat-completions/generate';
 const LARGE_KEY_COUNT = 30;
 const MAX_DIAGNOSTICS = 2;
